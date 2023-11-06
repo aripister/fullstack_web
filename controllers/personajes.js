@@ -61,7 +61,7 @@ const getUltimosPersonajesCreados = async(limit,offset) => {
 
 const getPersonajesPorUsuario = async(limit,offset,usuario) => {
     console.log(usuario);
-    const personajesPorUsuario = await PersonajeCreado.find({ userId: usuario}).limit(limit).skip(offset);
+    const personajesPorUsuario = await PersonajeCreado.find({ userId: usuario, createdAt: -1}).limit(limit).skip(offset);
 
     return personajesPorUsuario;
 }
