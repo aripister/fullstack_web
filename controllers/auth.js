@@ -1,6 +1,7 @@
 require('mongoose');
 const Usr = require('../models/user');
-//const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+const secret_key = process.env.SECRET_KEY;
 
 //variable para simular la sesion para la primer entrega
 var session = "";
@@ -19,7 +20,7 @@ const login = async(name,pin) => {
             //jwt.sign('payload','secret_key','options')
             //const token = jwt.sign({ foo: 'bar' }, 'secret_key');
             session = name;    
-            const token = "fgdgbrfeer6g1df23g86ef2gs";
+            const token = jwt.sign({ user: result }, secret_key, { expiresIn: "1h" });
             return token;
     }
     return null; // retorno null si es invalido el login

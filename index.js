@@ -12,7 +12,7 @@ const UsrController = require('./controllers/user');
 const AuthController = require('./controllers/auth');
 const PersonajeController = require('./controllers/personajes');
 const RopaController = require('./controllers/ropa');
-//const Middleware = require('./middleware/auth-middleware');
+const Middleware = require('./middleware/auth-middleware');
 //const MailController = require('./controllers/mail');
 
 
@@ -131,7 +131,7 @@ app.get("/session",async (req,res) =>{
 // PERSONAJES
 
 // Get de todos los personajes default
-app.get("/personajesDefault", async (req,res) =>{
+app.get("/personajesDefault",  Middleware.verify, async (req,res) =>{
 
   let limit = req.query.limit;
   let offset = req.query.offset;
@@ -149,7 +149,7 @@ app.get("/personajesDefault", async (req,res) =>{
 
 // Creo un nuevo personaje con ropa 
 
-app.post("/createPersonajeNuevo", async (req,res) =>{
+app.post("/createPersonajeNuevo", Middleware.verify, async (req,res) =>{
     
   let userId = req.body.userId;
   let name = req.body.name;
@@ -189,11 +189,11 @@ app.get("/personajesCreados", async (req,res) =>{
 
 // Get Personajes que usuario haya generado previamente
 
-app.get("/personajes/user", async (req,res) =>{
+app.get("/personajes/user",  Middleware.verify, async (req,res) =>{
 
   let limit = req.query.limit;
   let offset = req.query.offset;
-  let usuario = req.body.userId;
+  let usuario = req.query.userId;
 
   try{
       const results = await PersonajeController.getPersonajesPorUsuario(limit,offset,usuario);
@@ -208,7 +208,7 @@ app.get("/personajes/user", async (req,res) =>{
 
 // Get prendas de ropa por tipo de prenda(parteSuperior, parteInferior o zapatos) 
 
-app.get("/ropa", async (req,res) =>{
+app.get("/ropa",  Middleware.verify, async (req,res) =>{
 
   let limit = req.query.limit;
   let offset = req.query.offset;
@@ -223,4 +223,5 @@ app.get("/ropa", async (req,res) =>{
   }
 
 });
+
 
